@@ -1,6 +1,6 @@
 import { Pagina3PageModule } from './../pagina3/pagina3.module';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 
 /**
  * Generated class for the Pagina2Page page.
@@ -16,7 +16,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class Pagina2Page {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  // *.42 Import e inject AlertController:
+  // *.44 Import e inject LoadingController:
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private loadingCtrl:LoadingController) {
   }
 
   // *.10 Crear método que atiende al evento:
@@ -57,7 +59,7 @@ export class Pagina2Page {
     console.log("ionViewWillUnload");
   }
 
-  ionViewCanEnter() {
+  ionViewCanEnter_antiguo() {
     console.log("ionViewCanEnter");
 
     // *.16 Entrar de forna aleatoria:
@@ -69,7 +71,33 @@ export class Pagina2Page {
       return false;
   }
 
-  ionViewCanLeave() {
+  // *.41 Renombrar el ionViewCanEnter() anterior:
+  ionViewCanEnter() {
+    console.log("ionViewCanEnter");
+
+    let promesa = new Promise((resolv, reject) => {
+      // *.43 Copiar el esquema de la DOCU: https://ionicframework.com/docs/components/#alert-confirm
+      let confirmar = this.alertCtrl.create({
+        title: 'Seguro?',
+        message: 'Quieres entrar?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            handler: () => resolv(false)
+          },
+          {
+            text: 'Aceptar',
+            handler: () => resolv(true)
+          }
+        ]
+      });
+      confirmar.present();
+    });
+
+    return promesa;
+  }
+
+  ionViewCanLeave_antiguo() {
     console.log("ionViewCanLeave");
     // *.17 Dejamos salir después de 2 segundos:
     let promesa = new Promise((resolv, reject) => {
@@ -80,6 +108,24 @@ export class Pagina2Page {
     return promesa;
 
     // *.18 Sintaxis alternativa return new promesa....
+  }
+
+  // *.44 Renombrar el ionViewCanLeave() anterior:
+  ionViewCanLeave() {
+    console.log("ionViewCanLeave");
+
+    let loading = this.loadingCtrl.create({
+      content: "Espere por favor..."
+    })
+    loading.present();
+
+    let promesa = new Promise((resolv, reject) => {
+      setTimeout(() => {
+        resolv(true);
+        loading.dismiss();
+      }, 5000);
+    });
+    return promesa;
   }
 
 }
