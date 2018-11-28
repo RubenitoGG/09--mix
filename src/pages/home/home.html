@@ -7,8 +7,13 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <!-- *.1 Se crearon dos páginas:
+    ionic g page pagina2
+    ionic g page pagina3 -->
+
+  <!-- *.2 Creo un botón con su navegación a la página 2 -->
+  <!-- *.8 Añado la navegación a la pagina 2 [navPush]: -->
+  <button ion-button block [navPush]="pag2">
+    Ir a página 2
+  </button>
 </ion-content>
