@@ -30,7 +30,7 @@ import { IonicStorageModule } from '@ionic/storage';
   entryComponents: [
     MyApp,
     HomePage,
-    // *4. Referencia a página:
+    // *.4 Referencia a página:
     Pagina2Page
   ],
   providers: [
